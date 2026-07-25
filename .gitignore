@@ -10,3 +10,6 @@ kubeconfig*
 
 # OS
 .DS_Store
+
+# local agent briefing — not part of the public repo
+AGENT-PLAN.md
