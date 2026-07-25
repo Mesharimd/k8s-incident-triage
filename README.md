@@ -2,7 +2,7 @@
 
 > An AI incident-triage agent for Kubernetes. When an alert fires, it
 > investigates — querying Prometheus, reading targeted pod logs, checking
-> rollout history — and posts a diagnosis with cited evidence to Telegram.
+> rollout history and posts a diagnosis with cited evidence to Telegram.
 > **Read-only by design. The human stays in command.**
 
 <!-- demo GIF goes here (T5) -->
