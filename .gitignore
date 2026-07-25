@@ -1,0 +1,12 @@
+# deps / build
+node_modules/
+dist/
+
+# secrets — never in git
+.env
+*.pem
+*.key
+kubeconfig*
+
+# OS
+.DS_Store
