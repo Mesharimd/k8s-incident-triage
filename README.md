@@ -9,7 +9,7 @@
 
 ## The story
 
-I prototyped this inside a fintech's SRE team in 2025. It died the classic
+I prototyped this  in 2025. It died the classic
 death: stuffing raw logs and metrics into the prompt blew the LLM's context
 window. This is the rebuild with the architecture that fixes it — **the
 model doesn't get dumped context; it gets tools, and pulls only what it
