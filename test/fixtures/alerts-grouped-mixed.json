@@ -1,0 +1,51 @@
+{
+  "version": "4",
+  "groupKey": "{}:{namespace=\"payments\"}",
+  "truncatedAlerts": 0,
+  "status": "firing",
+  "receiver": "k8s-incident-triage",
+  "groupLabels": {
+    "namespace": "payments"
+  },
+  "commonLabels": {
+    "namespace": "payments",
+    "severity": "critical"
+  },
+  "commonAnnotations": {},
+  "externalURL": "http://alertmanager.monitoring.svc:9093",
+  "notification_reason": "group_interval",
+  "alerts": [
+    {
+      "status": "resolved",
+      "labels": {
+        "alertname": "PodMemoryPressure",
+        "namespace": "payments",
+        "pod": "checkout-api-7c8f6f6d8b-r4x9n",
+        "severity": "critical"
+      },
+      "annotations": {
+        "summary": "Checkout pod memory pressure resolved"
+      },
+      "startsAt": "2026-07-25T14:03:00Z",
+      "endsAt": "2026-07-25T14:11:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph",
+      "fingerprint": "7f0dcb4fc25a9e2b"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CheckoutUnavailable",
+        "namespace": "payments",
+        "pod": "checkout-api-5b48f95f67-9mh8k",
+        "severity": "critical"
+      },
+      "annotations": {
+        "summary": "Checkout is unavailable"
+      },
+      "startsAt": "2026-07-25T15:00:00Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph",
+      "fingerprint": "0a19d85e7cafe132"
+    }
+  ]
+}

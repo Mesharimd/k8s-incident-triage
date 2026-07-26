@@ -1,0 +1,66 @@
+{
+  "version": "4",
+  "groupKey": "{}:{cluster=\"prod\"}",
+  "truncatedAlerts": 0,
+  "status": "firing",
+  "receiver": "k8s-incident-triage",
+  "groupLabels": {
+    "cluster": "prod"
+  },
+  "commonLabels": {
+    "cluster": "prod"
+  },
+  "commonAnnotations": {},
+  "externalURL": "http://alertmanager.monitoring.svc:9093",
+  "notification_reason": "group_interval",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "CheckoutUnavailable",
+        "namespace": "payments",
+        "pod": "checkout-api-5b48f95f67-9mh8k",
+        "severity": "critical"
+      },
+      "annotations": {
+        "summary": "Checkout is unavailable"
+      },
+      "startsAt": "2026-07-25T15:00:00Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph",
+      "fingerprint": "0a19d85e7cafe132"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "WorkerLagging",
+        "namespace": "internal",
+        "pod": "worker-67dfd589b8-qnc7l",
+        "severity": "warning"
+      },
+      "annotations": {
+        "summary": "Worker queue lag is elevated"
+      },
+      "startsAt": "2026-07-25T15:00:00Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph",
+      "fingerprint": "5cb4bfe3cc3bb682"
+    },
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "ControllerUnavailable",
+        "namespace": "kube-system",
+        "pod": "controller-0",
+        "severity": "critical"
+      },
+      "annotations": {
+        "summary": "Controller is unavailable"
+      },
+      "startsAt": "2026-07-25T15:00:00Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph",
+      "fingerprint": "dd5817bb25b83f12"
+    }
+  ]
+}

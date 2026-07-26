@@ -1,0 +1,41 @@
+{
+  "version": "4",
+  "groupKey": "{}:{alertname=\"PodMemoryPressure\", namespace=\"payments\"}",
+  "truncatedAlerts": 0,
+  "status": "firing",
+  "receiver": "k8s-incident-triage",
+  "groupLabels": {
+    "alertname": "PodMemoryPressure",
+    "namespace": "payments"
+  },
+  "commonLabels": {
+    "alertname": "PodMemoryPressure",
+    "namespace": "payments",
+    "severity": "critical"
+  },
+  "commonAnnotations": {
+    "summary": "Checkout pod is approaching its memory limit"
+  },
+  "externalURL": "http://alertmanager.monitoring.svc:9093",
+  "notification_reason": "group_interval",
+  "alerts": [
+    {
+      "status": "firing",
+      "labels": {
+        "alertname": "PodMemoryPressure",
+        "namespace": "payments",
+        "pod": "checkout-api-7c8f6f6d8b-r4x9n",
+        "severity": "critical",
+        "container": "checkout-api"
+      },
+      "annotations": {
+        "description": "Working set is above 95% of the configured limit",
+        "summary": "Checkout pod is approaching its memory limit"
+      },
+      "startsAt": "2026-07-25T14:03:00Z",
+      "endsAt": "0001-01-01T00:00:00Z",
+      "generatorURL": "http://prometheus.monitoring.svc:9090/graph?g0.expr=container_memory_working_set_bytes",
+      "fingerprint": "7f0dcb4fc25a9e2b"
+    }
+  ]
+}
