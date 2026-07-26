@@ -1,0 +1,6 @@
+2026-07-25T15:18:41.224Z INFO starting checkout-api version=2026.07.25-1
+2026-07-25T15:18:41.381Z INFO connected to postgres host=payments-db
+2026-07-25T15:18:42.016Z WARN inventory request slow duration_ms=1842
+2026-07-25T15:18:44.902Z ERROR checkout failed order_id=ord-8472 error="inventory timeout"
+2026-07-25T15:18:44.903Z INFO draining in-flight requests
+2026-07-25T15:18:45.107Z ERROR process exiting code=1

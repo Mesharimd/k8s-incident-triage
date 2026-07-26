@@ -1,0 +1,32 @@
+{
+  "status": "success",
+  "data": {
+    "resultType": "matrix",
+    "result": [
+      {
+        "metric": {
+          "__name__": "container_cpu_usage_seconds_total",
+          "namespace": "payments",
+          "pod": "checkout-api-5b48f95f67-9mh8k"
+        },
+        "values": [
+          [1784987880, "0.42"],
+          [1784987895, "0.51"],
+          [1784987910, "0.63"]
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "container_cpu_usage_seconds_total",
+          "namespace": "payments",
+          "pod": "checkout-api-5b48f95f67-vs7jn"
+        },
+        "values": [
+          [1784987880, "0.37"],
+          [1784987895, "0.39"],
+          [1784987910, "0.44"]
+        ]
+      }
+    ]
+  }
+}

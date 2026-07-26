@@ -1,0 +1,715 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "name": "oversized-diagnostic",
+    "namespace": "payments",
+    "annotations": {
+      "secret-note": "oversized-secret-must-not-leak"
+    }
+  },
+  "spec": {
+    "nodeName": "worker-large",
+    "restartPolicy": "Always",
+    "containers": [
+      {
+        "name": "worker",
+        "env": [
+          {
+            "name": "API_TOKEN",
+            "value": "oversized-token-must-not-leak"
+          }
+        ]
+      }
+    ]
+  },
+  "status": {
+    "phase": "Pending",
+    "conditions": [
+      {
+        "type": "Diagnostic000",
+        "status": "True",
+        "reason": "SyntheticReason000",
+        "message": "HEAD_SENTINEL memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 memory pressure ارتفاع 🚨 ",
+        "lastTransitionTime": "2026-07-25T00:00:00Z"
+      },
+      {
+        "type": "Diagnostic001",
+        "status": "False",
+        "reason": "SyntheticReason001",
+        "message": "condition 001 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:01:00Z"
+      },
+      {
+        "type": "Diagnostic002",
+        "status": "True",
+        "reason": "SyntheticReason002",
+        "message": "condition 002 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:02:00Z"
+      },
+      {
+        "type": "Diagnostic003",
+        "status": "False",
+        "reason": "SyntheticReason003",
+        "message": "condition 003 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:03:00Z"
+      },
+      {
+        "type": "Diagnostic004",
+        "status": "True",
+        "reason": "SyntheticReason004",
+        "message": "condition 004 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:04:00Z"
+      },
+      {
+        "type": "Diagnostic005",
+        "status": "False",
+        "reason": "SyntheticReason005",
+        "message": "condition 005 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:05:00Z"
+      },
+      {
+        "type": "Diagnostic006",
+        "status": "True",
+        "reason": "SyntheticReason006",
+        "message": "condition 006 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:06:00Z"
+      },
+      {
+        "type": "Diagnostic007",
+        "status": "False",
+        "reason": "SyntheticReason007",
+        "message": "condition 007 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:07:00Z"
+      },
+      {
+        "type": "Diagnostic008",
+        "status": "True",
+        "reason": "SyntheticReason008",
+        "message": "condition 008 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:08:00Z"
+      },
+      {
+        "type": "Diagnostic009",
+        "status": "False",
+        "reason": "SyntheticReason009",
+        "message": "condition 009 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:09:00Z"
+      },
+      {
+        "type": "Diagnostic010",
+        "status": "True",
+        "reason": "SyntheticReason010",
+        "message": "condition 010 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:10:00Z"
+      },
+      {
+        "type": "Diagnostic011",
+        "status": "False",
+        "reason": "SyntheticReason011",
+        "message": "condition 011 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:11:00Z"
+      },
+      {
+        "type": "Diagnostic012",
+        "status": "True",
+        "reason": "SyntheticReason012",
+        "message": "condition 012 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:12:00Z"
+      },
+      {
+        "type": "Diagnostic013",
+        "status": "False",
+        "reason": "SyntheticReason013",
+        "message": "condition 013 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:13:00Z"
+      },
+      {
+        "type": "Diagnostic014",
+        "status": "True",
+        "reason": "SyntheticReason014",
+        "message": "condition 014 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:14:00Z"
+      },
+      {
+        "type": "Diagnostic015",
+        "status": "False",
+        "reason": "SyntheticReason015",
+        "message": "condition 015 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:15:00Z"
+      },
+      {
+        "type": "Diagnostic016",
+        "status": "True",
+        "reason": "SyntheticReason016",
+        "message": "condition 016 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:16:00Z"
+      },
+      {
+        "type": "Diagnostic017",
+        "status": "False",
+        "reason": "SyntheticReason017",
+        "message": "condition 017 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:17:00Z"
+      },
+      {
+        "type": "Diagnostic018",
+        "status": "True",
+        "reason": "SyntheticReason018",
+        "message": "condition 018 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:18:00Z"
+      },
+      {
+        "type": "Diagnostic019",
+        "status": "False",
+        "reason": "SyntheticReason019",
+        "message": "condition 019 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:19:00Z"
+      },
+      {
+        "type": "Diagnostic020",
+        "status": "True",
+        "reason": "SyntheticReason020",
+        "message": "condition 020 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:20:00Z"
+      },
+      {
+        "type": "Diagnostic021",
+        "status": "False",
+        "reason": "SyntheticReason021",
+        "message": "condition 021 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:21:00Z"
+      },
+      {
+        "type": "Diagnostic022",
+        "status": "True",
+        "reason": "SyntheticReason022",
+        "message": "condition 022 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:22:00Z"
+      },
+      {
+        "type": "Diagnostic023",
+        "status": "False",
+        "reason": "SyntheticReason023",
+        "message": "condition 023 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:23:00Z"
+      },
+      {
+        "type": "Diagnostic024",
+        "status": "True",
+        "reason": "SyntheticReason024",
+        "message": "condition 024 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:24:00Z"
+      },
+      {
+        "type": "Diagnostic025",
+        "status": "False",
+        "reason": "SyntheticReason025",
+        "message": "condition 025 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:25:00Z"
+      },
+      {
+        "type": "Diagnostic026",
+        "status": "True",
+        "reason": "SyntheticReason026",
+        "message": "condition 026 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:26:00Z"
+      },
+      {
+        "type": "Diagnostic027",
+        "status": "False",
+        "reason": "SyntheticReason027",
+        "message": "condition 027 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:27:00Z"
+      },
+      {
+        "type": "Diagnostic028",
+        "status": "True",
+        "reason": "SyntheticReason028",
+        "message": "condition 028 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:28:00Z"
+      },
+      {
+        "type": "Diagnostic029",
+        "status": "False",
+        "reason": "SyntheticReason029",
+        "message": "condition 029 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:29:00Z"
+      },
+      {
+        "type": "Diagnostic030",
+        "status": "True",
+        "reason": "SyntheticReason030",
+        "message": "condition 030 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:30:00Z"
+      },
+      {
+        "type": "Diagnostic031",
+        "status": "False",
+        "reason": "SyntheticReason031",
+        "message": "condition 031 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:31:00Z"
+      },
+      {
+        "type": "Diagnostic032",
+        "status": "True",
+        "reason": "SyntheticReason032",
+        "message": "condition 032 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:32:00Z"
+      },
+      {
+        "type": "Diagnostic033",
+        "status": "False",
+        "reason": "SyntheticReason033",
+        "message": "condition 033 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:33:00Z"
+      },
+      {
+        "type": "Diagnostic034",
+        "status": "True",
+        "reason": "SyntheticReason034",
+        "message": "condition 034 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:34:00Z"
+      },
+      {
+        "type": "Diagnostic035",
+        "status": "False",
+        "reason": "SyntheticReason035",
+        "message": "condition 035 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:35:00Z"
+      },
+      {
+        "type": "Diagnostic036",
+        "status": "True",
+        "reason": "SyntheticReason036",
+        "message": "condition 036 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:36:00Z"
+      },
+      {
+        "type": "Diagnostic037",
+        "status": "False",
+        "reason": "SyntheticReason037",
+        "message": "condition 037 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:37:00Z"
+      },
+      {
+        "type": "Diagnostic038",
+        "status": "True",
+        "reason": "SyntheticReason038",
+        "message": "condition 038 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:38:00Z"
+      },
+      {
+        "type": "Diagnostic039",
+        "status": "False",
+        "reason": "SyntheticReason039",
+        "message": "condition 039 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:39:00Z"
+      },
+      {
+        "type": "Diagnostic040",
+        "status": "True",
+        "reason": "SyntheticReason040",
+        "message": "condition 040 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:40:00Z"
+      },
+      {
+        "type": "Diagnostic041",
+        "status": "False",
+        "reason": "SyntheticReason041",
+        "message": "condition 041 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:41:00Z"
+      },
+      {
+        "type": "Diagnostic042",
+        "status": "True",
+        "reason": "SyntheticReason042",
+        "message": "condition 042 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:42:00Z"
+      },
+      {
+        "type": "Diagnostic043",
+        "status": "False",
+        "reason": "SyntheticReason043",
+        "message": "condition 043 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:43:00Z"
+      },
+      {
+        "type": "Diagnostic044",
+        "status": "True",
+        "reason": "SyntheticReason044",
+        "message": "condition 044 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:44:00Z"
+      },
+      {
+        "type": "Diagnostic045",
+        "status": "False",
+        "reason": "SyntheticReason045",
+        "message": "condition 045 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:45:00Z"
+      },
+      {
+        "type": "Diagnostic046",
+        "status": "True",
+        "reason": "SyntheticReason046",
+        "message": "condition 046 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:46:00Z"
+      },
+      {
+        "type": "Diagnostic047",
+        "status": "False",
+        "reason": "SyntheticReason047",
+        "message": "condition 047 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:47:00Z"
+      },
+      {
+        "type": "Diagnostic048",
+        "status": "True",
+        "reason": "SyntheticReason048",
+        "message": "condition 048 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:48:00Z"
+      },
+      {
+        "type": "Diagnostic049",
+        "status": "False",
+        "reason": "SyntheticReason049",
+        "message": "condition 049 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:49:00Z"
+      },
+      {
+        "type": "Diagnostic050",
+        "status": "True",
+        "reason": "SyntheticReason050",
+        "message": "condition 050 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:50:00Z"
+      },
+      {
+        "type": "Diagnostic051",
+        "status": "False",
+        "reason": "SyntheticReason051",
+        "message": "condition 051 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:51:00Z"
+      },
+      {
+        "type": "Diagnostic052",
+        "status": "True",
+        "reason": "SyntheticReason052",
+        "message": "condition 052 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:52:00Z"
+      },
+      {
+        "type": "Diagnostic053",
+        "status": "False",
+        "reason": "SyntheticReason053",
+        "message": "condition 053 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:53:00Z"
+      },
+      {
+        "type": "Diagnostic054",
+        "status": "True",
+        "reason": "SyntheticReason054",
+        "message": "condition 054 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:54:00Z"
+      },
+      {
+        "type": "Diagnostic055",
+        "status": "False",
+        "reason": "SyntheticReason055",
+        "message": "condition 055 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:55:00Z"
+      },
+      {
+        "type": "Diagnostic056",
+        "status": "True",
+        "reason": "SyntheticReason056",
+        "message": "condition 056 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:56:00Z"
+      },
+      {
+        "type": "Diagnostic057",
+        "status": "False",
+        "reason": "SyntheticReason057",
+        "message": "condition 057 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:57:00Z"
+      },
+      {
+        "type": "Diagnostic058",
+        "status": "True",
+        "reason": "SyntheticReason058",
+        "message": "condition 058 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:58:00Z"
+      },
+      {
+        "type": "Diagnostic059",
+        "status": "False",
+        "reason": "SyntheticReason059",
+        "message": "condition 059 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T00:59:00Z"
+      },
+      {
+        "type": "Diagnostic060",
+        "status": "True",
+        "reason": "SyntheticReason060",
+        "message": "condition 060 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:00:00Z"
+      },
+      {
+        "type": "Diagnostic061",
+        "status": "False",
+        "reason": "SyntheticReason061",
+        "message": "condition 061 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:01:00Z"
+      },
+      {
+        "type": "Diagnostic062",
+        "status": "True",
+        "reason": "SyntheticReason062",
+        "message": "condition 062 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:02:00Z"
+      },
+      {
+        "type": "Diagnostic063",
+        "status": "False",
+        "reason": "SyntheticReason063",
+        "message": "condition 063 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:03:00Z"
+      },
+      {
+        "type": "Diagnostic064",
+        "status": "True",
+        "reason": "SyntheticReason064",
+        "message": "condition 064 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:04:00Z"
+      },
+      {
+        "type": "Diagnostic065",
+        "status": "False",
+        "reason": "SyntheticReason065",
+        "message": "condition 065 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:05:00Z"
+      },
+      {
+        "type": "Diagnostic066",
+        "status": "True",
+        "reason": "SyntheticReason066",
+        "message": "condition 066 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:06:00Z"
+      },
+      {
+        "type": "Diagnostic067",
+        "status": "False",
+        "reason": "SyntheticReason067",
+        "message": "condition 067 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:07:00Z"
+      },
+      {
+        "type": "Diagnostic068",
+        "status": "True",
+        "reason": "SyntheticReason068",
+        "message": "condition 068 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:08:00Z"
+      },
+      {
+        "type": "Diagnostic069",
+        "status": "False",
+        "reason": "SyntheticReason069",
+        "message": "condition 069 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:09:00Z"
+      },
+      {
+        "type": "Diagnostic070",
+        "status": "True",
+        "reason": "SyntheticReason070",
+        "message": "condition 070 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:10:00Z"
+      },
+      {
+        "type": "Diagnostic071",
+        "status": "False",
+        "reason": "SyntheticReason071",
+        "message": "condition 071 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:11:00Z"
+      },
+      {
+        "type": "Diagnostic072",
+        "status": "True",
+        "reason": "SyntheticReason072",
+        "message": "condition 072 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:12:00Z"
+      },
+      {
+        "type": "Diagnostic073",
+        "status": "False",
+        "reason": "SyntheticReason073",
+        "message": "condition 073 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:13:00Z"
+      },
+      {
+        "type": "Diagnostic074",
+        "status": "True",
+        "reason": "SyntheticReason074",
+        "message": "condition 074 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:14:00Z"
+      },
+      {
+        "type": "Diagnostic075",
+        "status": "False",
+        "reason": "SyntheticReason075",
+        "message": "condition 075 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:15:00Z"
+      },
+      {
+        "type": "Diagnostic076",
+        "status": "True",
+        "reason": "SyntheticReason076",
+        "message": "condition 076 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:16:00Z"
+      },
+      {
+        "type": "Diagnostic077",
+        "status": "False",
+        "reason": "SyntheticReason077",
+        "message": "condition 077 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:17:00Z"
+      },
+      {
+        "type": "Diagnostic078",
+        "status": "True",
+        "reason": "SyntheticReason078",
+        "message": "condition 078 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:18:00Z"
+      },
+      {
+        "type": "Diagnostic079",
+        "status": "False",
+        "reason": "SyntheticReason079",
+        "message": "condition 079 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:19:00Z"
+      },
+      {
+        "type": "Diagnostic080",
+        "status": "True",
+        "reason": "SyntheticReason080",
+        "message": "condition 080 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:20:00Z"
+      },
+      {
+        "type": "Diagnostic081",
+        "status": "False",
+        "reason": "SyntheticReason081",
+        "message": "condition 081 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:21:00Z"
+      },
+      {
+        "type": "Diagnostic082",
+        "status": "True",
+        "reason": "SyntheticReason082",
+        "message": "condition 082 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:22:00Z"
+      },
+      {
+        "type": "Diagnostic083",
+        "status": "False",
+        "reason": "SyntheticReason083",
+        "message": "condition 083 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:23:00Z"
+      },
+      {
+        "type": "Diagnostic084",
+        "status": "True",
+        "reason": "SyntheticReason084",
+        "message": "condition 084 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:24:00Z"
+      },
+      {
+        "type": "Diagnostic085",
+        "status": "False",
+        "reason": "SyntheticReason085",
+        "message": "condition 085 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:25:00Z"
+      },
+      {
+        "type": "Diagnostic086",
+        "status": "True",
+        "reason": "SyntheticReason086",
+        "message": "condition 086 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:26:00Z"
+      },
+      {
+        "type": "Diagnostic087",
+        "status": "False",
+        "reason": "SyntheticReason087",
+        "message": "condition 087 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:27:00Z"
+      },
+      {
+        "type": "Diagnostic088",
+        "status": "True",
+        "reason": "SyntheticReason088",
+        "message": "condition 088 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:28:00Z"
+      },
+      {
+        "type": "Diagnostic089",
+        "status": "False",
+        "reason": "SyntheticReason089",
+        "message": "condition 089 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:29:00Z"
+      },
+      {
+        "type": "Diagnostic090",
+        "status": "True",
+        "reason": "SyntheticReason090",
+        "message": "condition 090 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:30:00Z"
+      },
+      {
+        "type": "Diagnostic091",
+        "status": "False",
+        "reason": "SyntheticReason091",
+        "message": "condition 091 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:31:00Z"
+      },
+      {
+        "type": "Diagnostic092",
+        "status": "True",
+        "reason": "SyntheticReason092",
+        "message": "condition 092 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:32:00Z"
+      },
+      {
+        "type": "Diagnostic093",
+        "status": "False",
+        "reason": "SyntheticReason093",
+        "message": "condition 093 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:33:00Z"
+      },
+      {
+        "type": "Diagnostic094",
+        "status": "True",
+        "reason": "SyntheticReason094",
+        "message": "condition 094 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 diagnostic context سياق 🔎 ",
+        "lastTransitionTime": "2026-07-25T01:34:00Z"
+      },
+      {
+        "type": "Diagnostic095",
+        "status": "False",
+        "reason": "SyntheticReason095",
+        "message": "TAIL_SENTINEL recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ recovery pending استعادة ⏳ ",
+        "lastTransitionTime": "2026-07-25T01:35:00Z"
+      }
+    ],
+    "containerStatuses": [
+      {
+        "name": "worker",
+        "ready": false,
+        "restartCount": 99,
+        "state": {
+          "waiting": {
+            "reason": "ContainerCreating"
+          }
+        }
+      }
+    ]
+  }
+}

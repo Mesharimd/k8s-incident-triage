@@ -1,0 +1,258 @@
+{
+  "deployment": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "name": "checkout-api",
+      "namespace": "payments",
+      "uid": "2ee2db84-32f7-4b62-9c02-ffca7d30ce38",
+      "resourceVersion": "910414",
+      "creationTimestamp": "2026-07-20T10:00:00Z",
+      "annotations": {
+        "deployment.kubernetes.io/revision": "12"
+      }
+    },
+    "spec": {
+      "replicas": 1,
+      "selector": {
+        "matchLabels": {
+          "component": "api",
+          "app": "checkout-api"
+        }
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "checkout-api",
+            "component": "api"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "checkout",
+              "image": "registry.example.com/checkout:v42"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "replicaSets": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSetList",
+    "metadata": {
+      "resourceVersion": "910417"
+    },
+    "items": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-api-6f5f8d4d76",
+          "namespace": "payments",
+          "uid": "56bdd838-ff21-46a7-bf72-14ce24db8eb4",
+          "creationTimestamp": "2026-07-25T15:10:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "12",
+            "kubernetes.io/change-cause": "kubectl set image deployment/checkout-api checkout=registry.example.com/checkout:v42"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout-api",
+              "uid": "2ee2db84-32f7-4b62-9c02-ffca7d30ce38",
+              "controller": true,
+              "blockOwnerDeletion": true
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 1,
+          "selector": {
+            "matchLabels": {
+              "pod-template-hash": "6f5f8d4d76"
+            }
+          },
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example.com/checkout:v42"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 1,
+          "readyReplicas": 0,
+          "availableReplicas": 0
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-api-765694c86b",
+          "namespace": "payments",
+          "uid": "d59716bd-b4eb-49a2-afb2-f83682eb14bc",
+          "creationTimestamp": "2026-07-24T10:30:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "11",
+            "kubernetes.io/change-cause": "release checkout-api v41"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout-api",
+              "uid": "2ee2db84-32f7-4b62-9c02-ffca7d30ce38",
+              "controller": true,
+              "blockOwnerDeletion": true
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 0,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example.com/checkout:v41"
+                },
+                {
+                  "name": "envoy",
+                  "image": "registry.example.com/envoy:1.31.0"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 0,
+          "readyReplicas": 0,
+          "availableReplicas": 0
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-api-5b48f95f67",
+          "namespace": "payments",
+          "uid": "2821e19c-0c08-4554-bd08-d7e47d42f623",
+          "creationTimestamp": "2026-07-22T09:00:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "9"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout-api",
+              "uid": "2ee2db84-32f7-4b62-9c02-ffca7d30ce38",
+              "controller": true,
+              "blockOwnerDeletion": true
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 0,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example.com/checkout:v39"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 0
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-api-old-owner",
+          "namespace": "payments",
+          "uid": "1e0bbfff-bd51-4268-b1a0-51865e086e10",
+          "creationTimestamp": "2026-07-25T15:15:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "99"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout-api",
+              "uid": "43cd08ec-c8b4-449d-a496-54ff00edf856",
+              "controller": true
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 0,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example.com/checkout:stale"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 0
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-api-not-controller",
+          "namespace": "payments",
+          "uid": "59514f44-b6bf-46bc-afd1-52fa82acb246",
+          "creationTimestamp": "2026-07-25T15:16:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "100"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout-api",
+              "uid": "2ee2db84-32f7-4b62-9c02-ffca7d30ce38",
+              "controller": false
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 0,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example.com/checkout:not-controller"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 0
+        }
+      }
+    ]
+  }
+}
