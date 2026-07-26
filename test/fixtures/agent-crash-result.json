@@ -1,0 +1,142 @@
+{
+  "deployment": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "name": "checkout",
+      "namespace": "payments",
+      "uid": "5f0cc5c2-2b45-45b5-98fc-07b12d07a601",
+      "annotations": {
+        "deployment.kubernetes.io/revision": "18"
+      }
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "app": "checkout"
+        }
+      }
+    }
+  },
+  "replicaSets": {
+    "apiVersion": "apps/v1",
+    "kind": "ReplicaSetList",
+    "metadata": {},
+    "items": [
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-7bd9",
+          "namespace": "payments",
+          "uid": "checkout-rs-18",
+          "creationTimestamp": "2026-07-26T08:51:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "18",
+            "kubernetes.io/change-cause": "release checkout v2-broken"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout",
+              "uid": "5f0cc5c2-2b45-45b5-98fc-07b12d07a601",
+              "controller": true
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 1,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example/checkout:v2-broken"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 1,
+          "readyReplicas": 0,
+          "availableReplicas": 0
+        }
+      },
+      {
+        "apiVersion": "apps/v1",
+        "kind": "ReplicaSet",
+        "metadata": {
+          "name": "checkout-6bc8",
+          "namespace": "payments",
+          "uid": "checkout-rs-17",
+          "creationTimestamp": "2026-07-24T10:15:00Z",
+          "annotations": {
+            "deployment.kubernetes.io/revision": "17",
+            "kubernetes.io/change-cause": "release checkout v1.9.4"
+          },
+          "ownerReferences": [
+            {
+              "apiVersion": "apps/v1",
+              "kind": "Deployment",
+              "name": "checkout",
+              "uid": "5f0cc5c2-2b45-45b5-98fc-07b12d07a601",
+              "controller": true
+            }
+          ]
+        },
+        "spec": {
+          "replicas": 0,
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "checkout",
+                  "image": "registry.example/checkout:v1.9.4"
+                }
+              ]
+            }
+          }
+        },
+        "status": {
+          "replicas": 0,
+          "readyReplicas": 0,
+          "availableReplicas": 0
+        }
+      }
+    ]
+  },
+  "pod": {
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+      "name": "checkout-7bd9",
+      "namespace": "payments",
+      "creationTimestamp": "2026-07-26T08:51:10Z"
+    },
+    "status": {
+      "phase": "Running",
+      "containerStatuses": [
+        {
+          "name": "checkout",
+          "ready": false,
+          "restartCount": 9,
+          "state": {
+            "waiting": {
+              "reason": "CrashLoopBackOff"
+            }
+          },
+          "lastState": {
+            "terminated": {
+              "reason": "Error",
+              "exitCode": 127,
+              "finishedAt": "2026-07-26T08:58:40Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "logs": "2026-07-26T08:58:40Z exec /app/server: not found\n"
+}

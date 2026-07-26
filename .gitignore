@@ -1,6 +1,8 @@
 # deps / build
 node_modules/
 dist/
+traces/
+traces-test/
 
 # secrets — never in git
 .env

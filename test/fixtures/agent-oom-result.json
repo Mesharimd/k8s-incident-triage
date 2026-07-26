@@ -1,0 +1,31 @@
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+  "metadata": {
+    "name": "checkout-api-5b48f95f67-9mh8k",
+    "namespace": "payments",
+    "creationTimestamp": "2026-07-26T08:50:00Z"
+  },
+  "status": {
+    "phase": "Running",
+    "containerStatuses": [
+      {
+        "name": "checkout-api",
+        "ready": false,
+        "restartCount": 4,
+        "state": {
+          "waiting": {
+            "reason": "CrashLoopBackOff"
+          }
+        },
+        "lastState": {
+          "terminated": {
+            "reason": "OOMKilled",
+            "exitCode": 137,
+            "finishedAt": "2026-07-26T08:57:12Z"
+          }
+        }
+      }
+    ]
+  }
+}

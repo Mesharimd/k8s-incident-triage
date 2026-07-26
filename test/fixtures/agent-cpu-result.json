@@ -1,0 +1,41 @@
+{
+  "throttling": {
+    "status": "success",
+    "data": {
+      "resultType": "matrix",
+      "result": [
+        {
+          "metric": {
+            "__name__": "container_cpu_cfs_throttled_ratio",
+            "namespace": "payments",
+            "pod": "api-6cd8",
+            "container": "api"
+          },
+          "values": [
+            [1785056100, "0.83"],
+            [1785056400, "0.91"]
+          ]
+        }
+      ]
+    }
+  },
+  "latency": {
+    "status": "success",
+    "data": {
+      "resultType": "matrix",
+      "result": [
+        {
+          "metric": {
+            "__name__": "http_request_duration_p99_seconds",
+            "namespace": "payments",
+            "pod": "api-6cd8"
+          },
+          "values": [
+            [1785056100, "1.2"],
+            [1785056400, "2.8"]
+          ]
+        }
+      ]
+    }
+  }
+}
