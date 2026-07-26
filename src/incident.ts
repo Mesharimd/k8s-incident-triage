@@ -21,6 +21,8 @@ const MAX_METADATA_KEY_BYTES = 256;
 const MAX_LABEL_VALUE_BYTES = 1_024;
 const MAX_ANNOTATION_VALUE_BYTES = 4_096;
 const MAX_INCIDENT_BYTES = 16_384;
+export const DEFAULT_MAX_TRACKED_INCIDENTS = 1_000;
+export const MAX_TRACKED_INCIDENTS = 2_000;
 
 const SEVERITY_RANK: Readonly<Record<Severity, number>> = {
   info: 0,
@@ -44,6 +46,7 @@ export interface IncidentReceiverOptions {
   minSeverity?: Severity;
   namespaceAllowlist?: readonly string[];
   namespaceDenylist?: readonly string[];
+  maxTrackedIncidents?: number;
 }
 
 export interface IncidentReceiveResult {
@@ -51,6 +54,7 @@ export interface IncidentReceiveResult {
   resolved: Incident[];
   duplicateCount: number;
   filteredCount: number;
+  capacityRejectedCount: number;
 }
 
 export class InvalidAlertmanagerPayloadError extends Error {
@@ -64,6 +68,13 @@ export class AlertmanagerPayloadLimitError extends InvalidAlertmanagerPayloadErr
   constructor(message: string) {
     super(message);
     this.name = "AlertmanagerPayloadLimitError";
+  }
+}
+
+export class IncidentStateCapacityError extends Error {
+  constructor() {
+    super("incident state is at capacity");
+    this.name = "IncidentStateCapacityError";
   }
 }
 
@@ -137,10 +148,9 @@ function requiredString(
 }
 
 function stableFingerprint(labels: Readonly<Record<string, string>>): string {
-  const serialized = Object.entries(labels)
-    .sort(([left], [right]) => left.localeCompare(right))
-    .map(([key, value]) => `${key}=${value}`)
-    .join("\n");
+  const serialized = JSON.stringify(
+    Object.entries(labels).sort(([left], [right]) => left.localeCompare(right)),
+  );
 
   return createHash("sha256").update(serialized).digest("hex").slice(0, 16);
 }
@@ -221,8 +231,17 @@ export function normalizeAlertmanagerPayload(payload: unknown): NormalizedAlert[
       );
     }
 
+    const suppliedFingerprint = stringField(alert, "fingerprint");
+    if (
+      suppliedFingerprint !== undefined &&
+      !/^[a-f0-9]{16,64}$/i.test(suppliedFingerprint)
+    ) {
+      throw new InvalidAlertmanagerPayloadError(
+        `alerts[${index}].fingerprint must contain 16 to 64 hexadecimal characters`,
+      );
+    }
     const fingerprint =
-      stringField(alert, "fingerprint") ?? stableFingerprint(labels);
+      suppliedFingerprint?.toLowerCase() ?? stableFingerprint(labels);
 
     const normalized: NormalizedAlert = {
       status: rawStatus,
@@ -247,6 +266,7 @@ export class IncidentReceiver {
   readonly #minSeverity: Severity;
   readonly #namespaceAllowlist: ReadonlySet<string>;
   readonly #namespaceDenylist: ReadonlySet<string>;
+  readonly #maxTrackedIncidents: number;
   readonly #incidents = new Map<string, StoredIncident>();
   readonly #resolutionRollbacks = new WeakMap<Incident, Incident>();
 
@@ -258,26 +278,52 @@ export class IncidentReceiver {
     this.#minSeverity = options.minSeverity ?? "info";
     this.#namespaceAllowlist = new Set(options.namespaceAllowlist ?? []);
     this.#namespaceDenylist = new Set(options.namespaceDenylist ?? []);
+    this.#maxTrackedIncidents =
+      options.maxTrackedIncidents ?? DEFAULT_MAX_TRACKED_INCIDENTS;
+    if (
+      !Number.isSafeInteger(this.#maxTrackedIncidents) ||
+      this.#maxTrackedIncidents < 1 ||
+      this.#maxTrackedIncidents > MAX_TRACKED_INCIDENTS
+    ) {
+      throw new Error(
+        `maxTrackedIncidents must be between 1 and ${MAX_TRACKED_INCIDENTS}`,
+      );
+    }
   }
 
   receive(payload: unknown, now = Date.now()): IncidentReceiveResult {
+    const notifications = normalizeAlertmanagerPayload(payload);
+    this.#evictExpiredResolutions(now);
+    const updates = new Map<string, StoredIncident>();
+    let projectedSize = this.#incidents.size;
+    const pendingResolutionRollbacks: Array<
+      readonly [resolution: Incident, previous: Incident]
+    > = [];
     const result: IncidentReceiveResult = {
       opened: [],
       resolved: [],
       duplicateCount: 0,
       filteredCount: 0,
+      capacityRejectedCount: 0,
     };
 
-    for (const notification of normalizeAlertmanagerPayload(payload)) {
+    for (const notification of notifications) {
       const { incident, status } = notification;
-      const existing = this.#incidents.get(incident.fingerprint);
+      const existing =
+        updates.get(incident.fingerprint) ??
+        this.#incidents.get(incident.fingerprint);
 
       if (status === "resolved") {
-        if (existing?.isOpen === true) {
-          this.#resolutionRollbacks.set(incident, existing.incident);
-          existing.isOpen = false;
-          existing.incident = incident;
-          existing.suppressUntil = now + this.#debounceMs;
+        if (
+          existing?.isOpen === true &&
+          existing.incident.startsAt === incident.startsAt
+        ) {
+          pendingResolutionRollbacks.push([incident, existing.incident]);
+          updates.set(incident.fingerprint, {
+            incident,
+            isOpen: false,
+            suppressUntil: now + this.#debounceMs,
+          });
           result.resolved.push(incident);
         }
         continue;
@@ -289,6 +335,14 @@ export class IncidentReceiver {
       }
 
       if (
+        existing === undefined &&
+        projectedSize >= this.#maxTrackedIncidents
+      ) {
+        result.capacityRejectedCount += 1;
+        continue;
+      }
+
+      if (
         existing?.isOpen === true ||
         (existing !== undefined && now < existing.suppressUntil)
       ) {
@@ -296,12 +350,22 @@ export class IncidentReceiver {
         continue;
       }
 
-      this.#incidents.set(incident.fingerprint, {
+      updates.set(incident.fingerprint, {
         incident,
         isOpen: true,
         suppressUntil: 0,
       });
+      if (existing === undefined) {
+        projectedSize += 1;
+      }
       result.opened.push(incident);
+    }
+
+    for (const [fingerprint, stored] of updates) {
+      this.#incidents.set(fingerprint, stored);
+    }
+    for (const [resolution, previous] of pendingResolutionRollbacks) {
+      this.#resolutionRollbacks.set(resolution, previous);
     }
 
     return result;
@@ -309,6 +373,15 @@ export class IncidentReceiver {
 
   isOpen(fingerprint: string): boolean {
     return this.#incidents.get(fingerprint)?.isOpen ?? false;
+  }
+
+  isCurrentOpen(incident: Incident): boolean {
+    const existing = this.#incidents.get(incident.fingerprint);
+    return existing?.isOpen === true && existing.incident === incident;
+  }
+
+  incidentClosedBy(resolution: Incident): Incident | undefined {
+    return this.#resolutionRollbacks.get(resolution);
   }
 
   markIncidentDeliveryFailed(incident: Incident): void {
@@ -348,5 +421,13 @@ export class IncidentReceiver {
       ? SEVERITY_RANK[normalizedSeverity]
       : -1;
     return actual >= SEVERITY_RANK[this.#minSeverity];
+  }
+
+  #evictExpiredResolutions(now: number): void {
+    for (const [fingerprint, stored] of this.#incidents) {
+      if (!stored.isOpen && now >= stored.suppressUntil) {
+        this.#incidents.delete(fingerprint);
+      }
+    }
   }
 }

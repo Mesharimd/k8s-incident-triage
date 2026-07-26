@@ -1,0 +1,14 @@
+.git
+.github
+.agents
+.codex
+.env
+.env.*
+node_modules
+traces
+traces-test
+coverage
+deploy
+test
+AGENT-PLAN.md
+*.md

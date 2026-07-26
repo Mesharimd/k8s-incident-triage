@@ -1,0 +1,50 @@
+{{- if .Values.alertmanagerConfig.enabled }}
+{{- $scope := required "alertmanagerConfig.scope must be explicitly set to OnNamespace or Global when alertmanagerConfig.enabled=true" .Values.alertmanagerConfig.scope }}
+{{- if not (has $scope (list "OnNamespace" "Global")) }}
+{{- fail "alertmanagerConfig.scope must be either OnNamespace or Global" }}
+{{- end }}
+{{- if and (eq $scope "OnNamespace") (empty .Values.alertmanagerConfig.namespace) }}
+{{- fail "alertmanagerConfig.namespace must be the target workload namespace when alertmanagerConfig.scope=OnNamespace" }}
+{{- end }}
+{{- if eq $scope "OnNamespace" }}
+{{- range $matcher := .Values.alertmanagerConfig.route.matchers }}
+{{- if eq $matcher.name "namespace" }}
+{{- fail "alertmanagerConfig.route.matchers must not set namespace when alertmanagerConfig.scope=OnNamespace; the chart owns the exact namespace matcher" }}
+{{- end }}
+{{- end }}
+{{- end }}
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: {{ include "k8s-incident-triage.fullname" . }}
+  namespace: {{ default .Release.Namespace .Values.alertmanagerConfig.namespace }}
+  labels:
+    {{- include "k8s-incident-triage.labels" . | nindent 4 }}
+    {{- with .Values.alertmanagerConfig.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  route:
+    receiver: {{ include "k8s-incident-triage.fullname" . }}
+    groupBy:
+      {{- toYaml .Values.alertmanagerConfig.route.groupBy | nindent 6 }}
+    groupWait: {{ .Values.alertmanagerConfig.route.groupWait }}
+    groupInterval: {{ .Values.alertmanagerConfig.route.groupInterval }}
+    repeatInterval: {{ .Values.alertmanagerConfig.route.repeatInterval }}
+    {{- if or (eq $scope "OnNamespace") (not (empty .Values.alertmanagerConfig.route.matchers)) }}
+    matchers:
+      {{- if eq $scope "OnNamespace" }}
+      - name: namespace
+        value: {{ .Values.alertmanagerConfig.namespace | quote }}
+        matchType: "="
+      {{- end }}
+      {{- with .Values.alertmanagerConfig.route.matchers }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+    {{- end }}
+  receivers:
+    - name: {{ include "k8s-incident-triage.fullname" . }}
+      webhookConfigs:
+        - url: {{ default (printf "http://%s.%s.svc:%v/alerts" (include "k8s-incident-triage.fullname" .) .Release.Namespace .Values.service.port) .Values.alertmanagerConfig.webhookUrl | quote }}
+          sendResolved: true
+{{- end }}

@@ -11,6 +11,7 @@ import type {
   AssistantTurn,
   CompletionProvider,
   ProviderMessage,
+  ProviderRequestOptions,
   ProviderStopReason,
   ToolResultContentBlock,
 } from "../../src/agent/provider";
@@ -518,6 +519,149 @@ describe("triage agent loop", () => {
     ]);
     expect(secondEvents.map((event) => event.type)).toEqual(
       firstEvents.map((event) => event.type),
+    );
+  });
+
+  test("cancels a provider turn when the incident lifecycle is superseded", async () => {
+    const controller = new AbortController();
+    const trace = new InMemoryTraceSink();
+    let providerStarted: (() => void) | undefined;
+    const started = new Promise<void>((resolve) => {
+      providerStarted = resolve;
+    });
+    const provider: CompletionProvider = {
+      name: "abort-aware",
+      complete: async () => {
+        throw new Error("completion must not start after token-count cancellation");
+      },
+      countInputTokens: async (
+        _messages: readonly ProviderMessage[],
+        _tools: readonly ToolDefinition[],
+        options?: ProviderRequestOptions,
+      ): Promise<number> => {
+        providerStarted?.();
+        return new Promise<number>((_resolve, reject) => {
+          const rejectCancelled = (): void =>
+            reject(new Error("provider request cancelled"));
+          if (options?.signal?.aborted === true) {
+            rejectCancelled();
+            return;
+          }
+          options?.signal?.addEventListener("abort", rejectCancelled, {
+            once: true,
+          });
+        });
+      },
+    };
+
+    const running = runTriageAgent(
+      incident,
+      {
+        provider,
+        tools: registryReturning("unused"),
+        trace,
+        config: { ...config, incidentTimeoutMs: 10_000 },
+      },
+      { signal: controller.signal },
+    );
+    await started;
+    controller.abort();
+    const result = await Promise.race([
+      running,
+      new Promise<never>((_resolve, reject) =>
+        setTimeout(
+          () => reject(new Error("external cancellation did not settle promptly")),
+          250,
+        ),
+      ),
+    ]);
+
+    expect(result.report.status).toBe("insufficient_data");
+    expect(result.report.uncertainties).toEqual([
+      "incident lifecycle was superseded",
+    ]);
+    expect(trace.events).toContainEqual(
+      expect.objectContaining({
+        type: "run_stopped",
+        providerErrorKind: "IncidentSuperseded",
+      }),
+    );
+    expect(trace.events).not.toContainEqual(
+      expect.objectContaining({ providerErrorKind: "IncidentDeadlineExceeded" }),
+    );
+  });
+
+  test("releases a blocked tool turn when the incident lifecycle is superseded", async () => {
+    const controller = new AbortController();
+    const trace = new InMemoryTraceSink();
+    let toolStarted: (() => void) | undefined;
+    const started = new Promise<void>((resolve) => {
+      toolStarted = resolve;
+    });
+    let toolRuns = 0;
+    const tools: ReadOnlyToolRegistry = {
+      definitions: readOnlyToolDefinitions,
+      run: async () => {
+        toolRuns += 1;
+        toolStarted?.();
+        return new Promise(() => {
+          // The loop must release its worker slot even if a transport ignores
+          // cancellation; production tool transports remain separately bounded.
+        });
+      },
+    };
+    const provider = new ScriptedProvider([
+      assistantTurn(
+        1,
+        [
+          {
+            type: "tool_call",
+            id: "provider_tool_blocked",
+            name: "kubectl_describe",
+            input: {
+              kind: "pod",
+              name: incident.pod,
+              namespace: incident.namespace,
+            },
+          },
+        ],
+        "tool_use",
+      ),
+    ]);
+
+    const running = runTriageAgent(
+      incident,
+      {
+        provider,
+        tools,
+        trace,
+        config: { ...config, incidentTimeoutMs: 10_000 },
+      },
+      { signal: controller.signal },
+    );
+    await started;
+    controller.abort();
+    const result = await Promise.race([
+      running,
+      new Promise<never>((_resolve, reject) =>
+        setTimeout(
+          () => reject(new Error("tool cancellation did not settle promptly")),
+          250,
+        ),
+      ),
+    ]);
+
+    expect(result.report.uncertainties).toEqual([
+      "incident lifecycle was superseded",
+    ]);
+    expect(result.toolCalls).toEqual([]);
+    expect(toolRuns).toBe(1);
+    expect(provider.requests).toHaveLength(1);
+    expect(trace.events).toContainEqual(
+      expect.objectContaining({
+        type: "run_stopped",
+        providerErrorKind: "IncidentSuperseded",
+      }),
     );
   });
 

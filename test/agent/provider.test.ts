@@ -14,7 +14,7 @@ describe("agent runtime configuration", () => {
       contextWindowTokens: DEFAULT_AGENT_CONTEXT_TOKENS,
       maxOutputTokens: DEFAULT_AGENT_MAX_OUTPUT_TOKENS,
       contextSafetyTokens: 1_024,
-      incidentTimeoutMs: 120_000,
+      incidentTimeoutMs: 75_000,
     });
   });
 

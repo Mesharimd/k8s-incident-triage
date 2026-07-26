@@ -7,6 +7,7 @@ import {
   InMemoryTraceSink,
   JsonlTraceSink,
   NoopTraceSink,
+  redactSensitiveText,
   type TraceEvent,
 } from "../src/trace";
 
@@ -29,6 +30,27 @@ afterEach(async () => {
 });
 
 describe("trace sinks", () => {
+  test("redacts complete authorization and cookie header values", () => {
+    const value = [
+      "Authorization: Basic dXNlcjpwYXNz",
+      "proxy-authorization: Negotiate opaquecredential",
+      "Cookie: session=abc; csrf=def",
+      "Set-Cookie: session=ghi; HttpOnly",
+    ].join("\n");
+    const redacted = redactSensitiveText(value);
+
+    for (const secret of [
+      "dXNlcjpwYXNz",
+      "opaquecredential",
+      "session=abc",
+      "csrf=def",
+      "session=ghi",
+    ]) {
+      expect(redacted).not.toContain(secret);
+    }
+    expect(redacted.match(/\[REDACTED\]/g)).toHaveLength(4);
+  });
+
   test("keeps deterministic, provider-neutral events in memory", async () => {
     const sink = new InMemoryTraceSink(() => FIXED_TIME);
     const events: TraceEvent[] = [

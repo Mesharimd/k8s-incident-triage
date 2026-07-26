@@ -2,11 +2,18 @@ import type { Incident } from "../incident";
 import { createProductionReadOnlyToolRegistry } from "../tools";
 import { JsonlTraceSink } from "../trace";
 import { AnthropicProvider } from "./anthropic";
-import { runTriageAgent, type TriageRunResult } from "./loop";
+import {
+  runTriageAgent,
+  type TriageRunOptions,
+  type TriageRunResult,
+} from "./loop";
 import { loadAgentRuntimeConfig } from "./provider";
 
 export interface ProductionTriageAgent {
-  triage(incident: Incident): Promise<TriageRunResult>;
+  triage(
+    incident: Incident,
+    options?: TriageRunOptions,
+  ): Promise<TriageRunResult>;
 }
 
 export function createProductionTriageAgent(
@@ -19,13 +26,17 @@ export function createProductionTriageAgent(
   const config = loadAgentRuntimeConfig(environment);
 
   return {
-    triage: (incident) =>
-      runTriageAgent(incident, {
-        provider,
-        tools,
-        trace,
-        config,
-      }),
+    triage: (incident, options) =>
+      runTriageAgent(
+        incident,
+        {
+          provider,
+          tools,
+          trace,
+          config,
+        },
+        options,
+      ),
   };
 }
 

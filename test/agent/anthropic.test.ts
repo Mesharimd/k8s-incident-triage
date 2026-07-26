@@ -179,6 +179,8 @@ describe("AnthropicProvider", () => {
     expect(request?.system).toContain("uncertainty");
     expect(request?.system).toContain("never execute");
     expect(request?.system).toContain("suggestions only");
+    expect(request?.system).toContain("copy-paste-ready operator command");
+    expect(request?.system).toContain("omit the suggestion instead of inventing");
   });
 
   test("constrains each report status to the shape accepted by the runtime validator", async () => {
@@ -204,18 +206,18 @@ describe("AnthropicProvider", () => {
                 evidenceCallIds: {
                   type: "array",
                   minItems: 1,
-                  maxItems: 20,
+                  maxItems: 10,
                   items: { type: "string", minLength: 1, maxLength: 4_096 },
                 },
               },
             },
-            evidence: { type: "array", minItems: 1, maxItems: 20 },
-            suggestions: { type: "array", maxItems: 20 },
-            recentChanges: { type: "array", maxItems: 20 },
+            evidence: { type: "array", minItems: 1, maxItems: 10 },
+            suggestions: { type: "array", maxItems: 10 },
+            recentChanges: { type: "array", maxItems: 10 },
             uncertainties: {
               type: "array",
               minItems: 1,
-              maxItems: 20,
+              maxItems: 10,
               items: { type: "string", minLength: 1, maxLength: 4_096 },
             },
           },
@@ -226,13 +228,13 @@ describe("AnthropicProvider", () => {
           properties: {
             status: { type: "string", const: "insufficient_data" },
             probableCause: { type: "null" },
-            evidence: { type: "array", maxItems: 20 },
-            suggestions: { type: "array", maxItems: 20 },
-            recentChanges: { type: "array", maxItems: 20 },
+            evidence: { type: "array", maxItems: 10 },
+            suggestions: { type: "array", maxItems: 10 },
+            recentChanges: { type: "array", maxItems: 10 },
             uncertainties: {
               type: "array",
               minItems: 1,
-              maxItems: 20,
+              maxItems: 10,
               items: { type: "string", minLength: 1, maxLength: 4_096 },
             },
           },

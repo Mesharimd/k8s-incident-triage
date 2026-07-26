@@ -76,6 +76,32 @@ describe("triage report validation", () => {
     );
   });
 
+  test("rejects duplicate evidence items for the same bounded tool result", () => {
+    const duplicate = JSON.parse(oomReport) as {
+      evidence: Array<Record<string, unknown>>;
+    };
+    duplicate.evidence.push({
+      callId: "call_001",
+      observation: "A second rendering of the same tool result.",
+    });
+
+    expect(() =>
+      parseTriageReport(JSON.stringify(duplicate), new Set(["call_001"])),
+    ).toThrow("evidence[1].callId duplicates evidence for tool call call_001");
+  });
+
+  test("bounds every report list to ten operator-useful items", () => {
+    const excessive = JSON.parse(oomReport) as Record<string, unknown>;
+    excessive.uncertainties = Array.from(
+      { length: 11 },
+      (_value, index) => `uncertainty ${index + 1}`,
+    );
+
+    expect(() =>
+      parseTriageReport(JSON.stringify(excessive), new Set(["call_001"])),
+    ).toThrow("uncertainties must contain at most 10 items");
+  });
+
   test("rejects action claims marked as executed or extra fields", () => {
     const executed = JSON.parse(oomReport) as {
       suggestions: Array<Record<string, unknown>>;

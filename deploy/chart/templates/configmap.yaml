@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "k8s-incident-triage.fullname" . }}
+  labels:
+    {{- include "k8s-incident-triage.labels" . | nindent 4 }}
+data:
+  PORT: {{ .Values.config.port | quote }}
+  ALERT_DEBOUNCE_SECONDS: {{ .Values.config.alertDebounceSeconds | quote }}
+  MIN_SEVERITY: {{ .Values.config.minSeverity | quote }}
+  NAMESPACE_ALLOWLIST: {{ .Values.config.namespaceAllowlist | quote }}
+  NAMESPACE_DENYLIST: {{ .Values.config.namespaceDenylist | quote }}
+  PROMETHEUS_URL: {{ .Values.config.prometheusUrl | quote }}
+  INCIDENT_STATE_CAPACITY: {{ .Values.config.incidentStateCapacity | quote }}
+  INCIDENT_QUEUE_CAPACITY: {{ .Values.config.incidentQueueCapacity | quote }}
+  INCIDENT_CONCURRENCY: {{ .Values.config.incidentConcurrency | quote }}
+  TELEGRAM_TIMEOUT_MS: {{ .Values.config.telegramTimeoutMs | quote }}
+  ANTHROPIC_MODEL: {{ .Values.config.anthropicModel | quote }}
+  AGENT_MAX_TOOL_CALLS: {{ .Values.config.agentMaxToolCalls | quote }}
+  AGENT_CONTEXT_TOKENS: {{ .Values.config.agentContextTokens | quote }}
+  AGENT_MAX_OUTPUT_TOKENS: {{ .Values.config.agentMaxOutputTokens | quote }}
+  AGENT_CONTEXT_SAFETY_TOKENS: {{ .Values.config.agentContextSafetyTokens | quote }}
+  AGENT_INCIDENT_TIMEOUT_MS: {{ .Values.config.agentIncidentTimeoutMs | quote }}
+  ANTHROPIC_TIMEOUT_MS: {{ .Values.config.anthropicTimeoutMs | quote }}
+  ANTHROPIC_MAX_RETRIES: {{ .Values.config.anthropicMaxRetries | quote }}
+  TRACE_DIR: {{ .Values.config.traceDirectory | quote }}

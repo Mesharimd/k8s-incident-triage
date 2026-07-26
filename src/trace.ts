@@ -155,17 +155,27 @@ function isSensitiveKey(key: string): boolean {
   );
 }
 
-function redactPlainText(value: string): string {
+export function redactSensitiveText(value: string): string {
   return value
     .replace(
       /\b([a-z][a-z0-9+.-]*:\/\/)([^\s/@]+(?::[^\s/@]*)?@)/gi,
       `$1${REDACTED}@`,
     )
+    .replace(
+      /\b((?:proxy-)?authorization)(\s*[:=]\s*)[^\r\n]*/gi,
+      (_match, key: string, separator: string) =>
+        `${key}${separator}${REDACTED}`,
+    )
+    .replace(
+      /\b((?:set-)?cookie)(\s*[:=]\s*)[^\r\n]*/gi,
+      (_match, key: string, separator: string) =>
+        `${key}${separator}${REDACTED}`,
+    )
     .replace(/\bBearer\s+[A-Za-z0-9._~+/=-]+/gi, `Bearer ${REDACTED}`)
     .replace(/\bsk-ant-[A-Za-z0-9_-]{8,}\b/g, REDACTED)
     .replace(/\bxox[baprs]-[A-Za-z0-9-]{8,}\b/gi, REDACTED)
     .replace(
-      /\b(api[_-]?key|access[_-]?token|refresh[_-]?token|token|password|passwd|secret|client[_-]?secret|authorization|cookie)\b(\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;}]+)/gi,
+      /\b(api[_-]?key|access[_-]?token|refresh[_-]?token|token|password|passwd|secret|client[_-]?secret)\b(\s*[:=]\s*)(?:"[^"]*"|'[^']*'|[^\s,;}]+)/gi,
       (_match, key: string, separator: string) =>
         `${key}${separator}${REDACTED}`,
     )
@@ -175,6 +185,8 @@ function redactPlainText(value: string): string {
         `${key}${separator}${REDACTED}`,
     );
 }
+
+const redactPlainText = redactSensitiveText;
 
 function sanitizeUnknown(value: unknown, ancestors = new WeakSet<object>()): unknown {
   if (value === null || typeof value === "boolean") {

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: k8s-incident-triage
+description: Read-only AI incident triage for Kubernetes alerts
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

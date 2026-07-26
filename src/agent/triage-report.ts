@@ -1,7 +1,7 @@
 import { utf8ByteLength } from "../tools/result";
 
 const MAX_REPORT_BYTES = 32_000;
-const MAX_REPORT_ITEMS = 20;
+const MAX_REPORT_ITEMS = 10;
 const MAX_REPORT_STRING_BYTES = 4_096;
 
 export type Confidence = "low" | "medium" | "high";
@@ -137,6 +137,7 @@ function parseEvidence(
   value: unknown,
   executedCallIds: ReadonlySet<string>,
 ): readonly EvidenceItem[] {
+  const seenCallIds = new Set<string>();
   return arrayValue(value, "evidence").map((entry, index) => {
     const path = `evidence[${index}]`;
     const object = objectValue(entry, path);
@@ -145,6 +146,12 @@ function parseEvidence(
     if (!executedCallIds.has(callId)) {
       throw new InvalidTriageReportError(`${path}.callId cites unknown tool call ${callId}`);
     }
+    if (seenCallIds.has(callId)) {
+      throw new InvalidTriageReportError(
+        `${path}.callId duplicates evidence for tool call ${callId}`,
+      );
+    }
+    seenCallIds.add(callId);
     return {
       callId,
       observation: stringValue(object.observation, `${path}.observation`),

@@ -1,0 +1,147 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/mesharimd/k8s-incident-triage
+  pullPolicy: IfNotPresent
+  tag: ""
+  # A digest takes precedence over tag. Pin it in production GitOps values.
+  digest: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Set create=false and name to reuse a pre-provisioned ServiceAccount.
+  create: true
+  name: ""
+  annotations: {}
+
+rbac:
+  # The chart-managed ClusterRole grants get/list only.
+  create: true
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+
+networkPolicy:
+  enabled: true
+  # Restrict webhook ingress to the namespace that runs Alertmanager. Narrow
+  # podSelector too after inspecting the live operator-managed Pod labels.
+  alertmanagerNamespaceSelector:
+    matchLabels:
+      kubernetes.io/metadata.name: monitoring
+  alertmanagerPodSelector: {}
+
+config:
+  port: 3000
+  alertDebounceSeconds: 300
+  minSeverity: warning
+  namespaceAllowlist: ""
+  namespaceDenylist: kube-system
+  prometheusUrl: http://prometheus-operated.monitoring.svc:9090
+  incidentStateCapacity: 1000
+  incidentQueueCapacity: 100
+  incidentConcurrency: 2
+  telegramTimeoutMs: 40000
+  anthropicModel: claude-sonnet-5
+  agentMaxToolCalls: 10
+  agentContextTokens: 32000
+  agentMaxOutputTokens: 4096
+  agentContextSafetyTokens: 1024
+  # Leaves time inside the ~2 minute target for report formatting and Telegram.
+  agentIncidentTimeoutMs: 75000
+  anthropicTimeoutMs: 15000
+  anthropicMaxRetries: 0
+  traceDirectory: /var/lib/k8s-incident-triage/traces
+
+secrets:
+  # The chart never creates this Secret. Empty defaults to the release fullname.
+  existingSecret: ""
+  anthropicApiKeyKey: anthropic-api-key
+  telegramBotTokenKey: telegram-bot-token
+  telegramChatIdKey: telegram-chat-id
+
+probes:
+  startup:
+    periodSeconds: 2
+    timeoutSeconds: 1
+    failureThreshold: 30
+  readiness:
+    periodSeconds: 5
+    timeoutSeconds: 1
+    failureThreshold: 3
+  liveness:
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+
+# Active work is bounded to 75s triage + 40s Telegram delivery. Shutdown stops
+# admission, cancels pending work, and lets active work settle within this grace.
+terminationGracePeriodSeconds: 120
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+    ephemeral-storage: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+    ephemeral-storage: 256Mi
+
+storage:
+  # Both paths are ephemeral and are discarded when the Pod is replaced.
+  traces:
+    sizeLimit: 128Mi
+  tmp:
+    sizeLimit: 64Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+alertmanagerConfig:
+  # Creates a Prometheus Operator AlertmanagerConfig when its CRD is installed.
+  enabled: false
+  # Required when enabled. Supported values are OnNamespace and Global.
+  # Global is valid only after the cluster-owned Alertmanager is verified to
+  # use spec.alertmanagerConfigMatcherStrategy.type=None.
+  scope: ""
+  # With scope=OnNamespace, this is required and must be the target workload
+  # namespace carried by the alerts, not merely the Alertmanager namespace.
+  # With scope=Global, empty installs the config in the Helm release namespace.
+  namespace: ""
+  labels: {}
+  # Empty targets the chart Service using its cluster-local DNS name.
+  webhookUrl: ""
+  route:
+    groupBy:
+      - alertname
+      - namespace
+      - pod
+    groupWait: 10s
+    groupInterval: 1m
+    repeatInterval: 5m
+    # With scope=OnNamespace, the chart owns the exact namespace matcher.
+    matchers: []

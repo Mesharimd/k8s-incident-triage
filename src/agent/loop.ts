@@ -31,6 +31,7 @@ import {
 } from "./triage-report";
 
 const CONTEXT_PRESSURE_TOOL_BYTES = 4_000;
+const EXTERNAL_TRIAGE_ABORT_REASON = Symbol("incident lifecycle superseded");
 
 export interface ExecutedToolCall extends PreparedToolResult {
   readonly callId: string;
@@ -44,6 +45,10 @@ export interface TriageRunResult {
   readonly runId: string;
   readonly report: TriageReport;
   readonly toolCalls: readonly ExecutedToolCall[];
+}
+
+export interface TriageRunOptions {
+  readonly signal?: AbortSignal;
 }
 
 export interface TriageAgentDependencies {
@@ -260,6 +265,28 @@ async function stoppedRun(
   );
 }
 
+function stoppedForAbort(
+  trace: TraceSink,
+  incident: Incident,
+  runId: string,
+  toolCalls: readonly ExecutedToolCall[],
+  signal: AbortSignal,
+): Promise<TriageRunResult> {
+  const superseded = signal.reason === EXTERNAL_TRIAGE_ABORT_REASON;
+  return stoppedRun(trace, incident, runId, toolCalls, {
+    reason: "provider_error",
+    detail: superseded
+      ? "incident triage cancelled because the lifecycle was superseded"
+      : "overall incident triage deadline exceeded",
+    reportReason: superseded
+      ? "incident lifecycle was superseded"
+      : "incident triage deadline exceeded",
+    providerErrorKind: superseded
+      ? "IncidentSuperseded"
+      : "IncidentDeadlineExceeded",
+  });
+}
+
 function availableInputTokens(config: AgentRuntimeConfig): number {
   return (
     config.contextWindowTokens -
@@ -328,6 +355,29 @@ function enabledDefinitions(
     : dependencies.tools.definitions;
 }
 
+async function runToolWithSignal(
+  tools: ReadOnlyToolRegistry,
+  name: string,
+  input: unknown,
+  signal: AbortSignal,
+): Promise<BoundedToolResult> {
+  if (signal.aborted) {
+    throw new Error("tool execution cancelled");
+  }
+  let rejectCancellation: (reason: unknown) => void = () => undefined;
+  const cancelled = new Promise<never>((_resolve, reject) => {
+    rejectCancellation = reject;
+  });
+  const cancel = (): void =>
+    rejectCancellation(new Error("tool execution cancelled"));
+  signal.addEventListener("abort", cancel, { once: true });
+  try {
+    return await Promise.race([tools.run(name, input), cancelled]);
+  } finally {
+    signal.removeEventListener("abort", cancel);
+  }
+}
+
 async function runTriageAgentWithSignal(
   incident: Incident,
   dependencies: TriageAgentDependencies,
@@ -354,12 +404,7 @@ async function runTriageAgentWithSignal(
 
   for (let providerTurn = 1; providerTurn <= providerTurnLimit; providerTurn += 1) {
     if (signal.aborted) {
-      return stoppedRun(trace, incident, runId, toolCalls, {
-        reason: "provider_error",
-        detail: "overall incident triage deadline exceeded",
-        reportReason: "incident triage deadline exceeded",
-        providerErrorKind: "IncidentDeadlineExceeded",
-      });
+      return stoppedForAbort(trace, incident, runId, toolCalls, signal);
     }
     const definitions = enabledDefinitions(dependencies, toolCalls.length);
     let inputTokens: number;
@@ -371,12 +416,7 @@ async function runTriageAgentWithSignal(
       );
     } catch (error) {
       if (signal.aborted) {
-        return stoppedRun(trace, incident, runId, toolCalls, {
-          reason: "provider_error",
-          detail: "overall incident triage deadline exceeded",
-          reportReason: "incident triage deadline exceeded",
-          providerErrorKind: "IncidentDeadlineExceeded",
-        });
+        return stoppedForAbort(trace, incident, runId, toolCalls, signal);
       }
       return stoppedRun(trace, incident, runId, toolCalls, {
         reason: "provider_error",
@@ -422,12 +462,7 @@ async function runTriageAgentWithSignal(
       });
     } catch (error) {
       if (signal.aborted) {
-        return stoppedRun(trace, incident, runId, toolCalls, {
-          reason: "provider_error",
-          detail: "overall incident triage deadline exceeded",
-          reportReason: "incident triage deadline exceeded",
-          providerErrorKind: "IncidentDeadlineExceeded",
-        });
+        return stoppedForAbort(trace, incident, runId, toolCalls, signal);
       }
       return stoppedRun(trace, incident, runId, toolCalls, {
         reason: "provider_error",
@@ -521,11 +556,16 @@ async function runTriageAgentWithSignal(
       let rawResult: BoundedToolResult;
       let isError = false;
       try {
-        rawResult = await dependencies.tools.run(
+        rawResult = await runToolWithSignal(
+          dependencies.tools,
           requestedTool.name,
           requestedTool.input,
+          signal,
         );
       } catch (error) {
+        if (signal.aborted) {
+          return stoppedForAbort(trace, incident, runId, toolCalls, signal);
+        }
         isError = true;
         rawResult = safeToolError(requestedTool.name, error);
       }
@@ -556,12 +596,7 @@ async function runTriageAgentWithSignal(
         );
       } catch (error) {
         if (signal.aborted) {
-          return stoppedRun(trace, incident, runId, toolCalls, {
-            reason: "provider_error",
-            detail: "overall incident triage deadline exceeded",
-            reportReason: "incident triage deadline exceeded",
-            providerErrorKind: "IncidentDeadlineExceeded",
-          });
+          return stoppedForAbort(trace, incident, runId, toolCalls, signal);
         }
         return stoppedRun(trace, incident, runId, toolCalls, {
           reason: "provider_error",
@@ -599,12 +634,7 @@ async function runTriageAgentWithSignal(
           );
         } catch (error) {
           if (signal.aborted) {
-            return stoppedRun(trace, incident, runId, toolCalls, {
-              reason: "provider_error",
-              detail: "overall incident triage deadline exceeded",
-              reportReason: "incident triage deadline exceeded",
-              providerErrorKind: "IncidentDeadlineExceeded",
-            });
+            return stoppedForAbort(trace, incident, runId, toolCalls, signal);
           }
           return stoppedRun(trace, incident, runId, toolCalls, {
             reason: "provider_error",
@@ -681,9 +711,20 @@ async function runTriageAgentWithSignal(
 export async function runTriageAgent(
   incident: Incident,
   dependencies: TriageAgentDependencies,
+  options: TriageRunOptions = {},
 ): Promise<TriageRunResult> {
   assertAgentRuntimeConfig(dependencies.config);
   const controller = new AbortController();
+  const abortFromLifecycle = (): void => {
+    controller.abort(EXTERNAL_TRIAGE_ABORT_REASON);
+  };
+  if (options.signal?.aborted === true) {
+    abortFromLifecycle();
+  } else {
+    options.signal?.addEventListener("abort", abortFromLifecycle, {
+      once: true,
+    });
+  }
   const timeout = setTimeout(
     () => controller.abort(),
     dependencies.config.incidentTimeoutMs ?? DEFAULT_AGENT_INCIDENT_TIMEOUT_MS,
@@ -696,5 +737,6 @@ export async function runTriageAgent(
     );
   } finally {
     clearTimeout(timeout);
+    options.signal?.removeEventListener("abort", abortFromLifecycle);
   }
 }
