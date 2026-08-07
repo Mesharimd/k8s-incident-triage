@@ -1,5 +1,7 @@
 # k8s-incident-triage
 
+[![CI](https://github.com/Mesharimd/k8s-incident-triage/actions/workflows/ci.yml/badge.svg)](https://github.com/Mesharimd/k8s-incident-triage/actions/workflows/ci.yml)
+
 > An AI incident-triage agent for Kubernetes. When an alert fires, it
 > investigates querying Prometheus, reading targeted pod logs, checking
 > rollout history and posts a diagnosis with cited evidence to Telegram.
@@ -37,7 +39,8 @@ flowchart LR
   *before* entering the conversation.
 - Hard budgets: max 10 tool calls per incident, max total context size.
 - Every claim in the report cites the tool call that produced it. Full
-  traces logged per incident.
+  traces logged per incident; see the [synthetic fixture trace and cost
+  method](docs/example-trace.md) for the exact public record shape.
 
 ## Security model
 
@@ -54,6 +57,33 @@ flowchart LR
 Deployed via Helm chart onto
 [production-cluster-in-a-box](https://github.com/Mesharimd/production-cluster-in-a-box)
 through its GitOps flow — the two repos compose.
+
+## Failure demos
+
+The three operator-run demos create one intentionally unhealthy workload and
+one matching `PrometheusRule` in the dedicated
+`k8s-incident-triage-demo` namespace:
+
+| target | injected failure | resulting alert |
+|---|---|---|
+| `demo-oom` | memory hog with a 24 MiB limit | `K8sIncidentDemoOOMKilled` |
+| `demo-crash` | deliberately missing image tag | `K8sIncidentDemoImagePullBackOff` |
+| `demo-latency` | busy loop constrained to 10 millicores | `K8sIncidentDemoCPUStarvation` |
+
+Every target requires an explicit kube context so a demo cannot silently use
+whatever cluster happens to be current:
+
+```bash
+make demo-oom KUBE_CONTEXT=my-cluster
+make demo-clean KUBE_CONTEXT=my-cluster
+```
+
+The demo commands mutate only their dedicated namespace; the triage agent and
+its Kubernetes credentials remain read-only. Each failing workload continues
+until the operator runs `demo-clean`, which removes the three scenario
+resources but deliberately leaves the namespace. Live acceptance also verifies
+that the target `kube-prometheus-stack` release discovers rules labeled
+`release=kube-prometheus-stack` across this namespace.
 
 ## Roadmap
 

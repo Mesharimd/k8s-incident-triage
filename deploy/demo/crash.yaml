@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-triage-demo-crash
+  namespace: k8s-incident-triage-demo
+  labels:
+    app.kubernetes.io/name: k8s-triage-demo-crash
+    app.kubernetes.io/part-of: k8s-incident-triage-demo
+    incident-triage.meshari.dev/scenario: crash
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: k8s-triage-demo-crash
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: k8s-triage-demo-crash
+        app.kubernetes.io/part-of: k8s-incident-triage-demo
+        incident-triage.meshari.dev/scenario: crash
+    spec:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      terminationGracePeriodSeconds: 0
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: bad-image
+          image: registry.k8s.io/pause:k8s-incident-triage-demo-definitely-missing
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65534
+          resources:
+            requests:
+              cpu: 5m
+              memory: 8Mi
+              ephemeral-storage: 4Mi
+            limits:
+              cpu: 50m
+              memory: 24Mi
+              ephemeral-storage: 8Mi
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: k8s-triage-demo-crash
+  namespace: k8s-incident-triage-demo
+  labels:
+    app.kubernetes.io/name: k8s-triage-demo-crash
+    app.kubernetes.io/part-of: k8s-incident-triage-demo
+    incident-triage.meshari.dev/scenario: crash
+    # Live prerequisite: Prometheus must select this namespace and release label.
+    release: kube-prometheus-stack
+spec:
+  groups:
+    - name: k8s-incident-triage-demo-crash
+      rules:
+        - alert: K8sIncidentDemoImagePullBackOff
+          expr: |
+            max by (namespace, pod, container) (
+              kube_pod_container_status_waiting_reason{
+                namespace="k8s-incident-triage-demo",
+                pod=~"k8s-triage-demo-crash-.*",
+                container="bad-image",
+                reason=~"ErrImagePull|ImagePullBackOff"
+              }
+            ) == 1
+          for: 30s
+          labels:
+            severity: "warning"
+            demo: "true"
+            scenario: "crash"
+          annotations:
+            summary: "Demo workload cannot pull its image"
+            description: "The demo uses a deliberately missing image tag and is waiting in ErrImagePull or ImagePullBackOff. Human review is required; no remediation is automatic."
