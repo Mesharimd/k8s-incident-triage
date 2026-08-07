@@ -42,6 +42,19 @@ flowchart LR
   traces logged per incident; see the [synthetic fixture trace and cost
   method](docs/example-trace.md) for the exact public record shape.
 
+## Model providers
+
+The provider-neutral agent loop is demonstrated with two production adapters:
+
+- **Anthropic** through the Messages API.
+- **OpenRouter** through its OpenAI-compatible API. `OPENROUTER_MODEL` can
+  select any compatible OpenRouter model; incident triage requires reliable
+  tool calling and structured-output support.
+- **Ollama** is on the roadmap for fully in-cluster inference.
+
+Set `LLM_PROVIDER` explicitly to `anthropic` or `openrouter`; startup fails
+closed for missing or unknown values instead of silently choosing a provider.
+
 ## Security model
 
 - Dedicated ServiceAccount with a **read-only** ClusterRole: `get`/`list`

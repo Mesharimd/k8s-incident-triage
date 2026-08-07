@@ -7,6 +7,7 @@ import {
   type TriageRunOptions,
   type TriageRunResult,
 } from "./loop";
+import { OpenRouterProvider } from "./openrouter";
 import { loadAgentRuntimeConfig } from "./provider";
 
 export interface ProductionTriageAgent {
@@ -16,10 +17,23 @@ export interface ProductionTriageAgent {
   ): Promise<TriageRunResult>;
 }
 
+function createProductionProvider(
+  environment: Readonly<Record<string, string | undefined>>,
+): AnthropicProvider | OpenRouterProvider {
+  switch (environment.LLM_PROVIDER?.trim()) {
+    case "anthropic":
+      return new AnthropicProvider({ environment });
+    case "openrouter":
+      return new OpenRouterProvider({ environment });
+    default:
+      throw new Error('LLM_PROVIDER must be "anthropic" or "openrouter"');
+  }
+}
+
 export function createProductionTriageAgent(
   environment: Readonly<Record<string, string | undefined>> = Bun.env,
 ): ProductionTriageAgent {
-  const provider = new AnthropicProvider({ environment });
+  const provider = createProductionProvider(environment);
   const tools = createProductionReadOnlyToolRegistry(environment);
   const traceDirectory = environment.TRACE_DIR?.trim() || "./traces";
   const trace = new JsonlTraceSink({ directory: traceDirectory });
