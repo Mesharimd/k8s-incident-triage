@@ -136,7 +136,6 @@ describe("OpenRouterProvider", () => {
         },
       ],
       tool_choice: "auto",
-      parallel_tool_calls: false,
       response_format: {
         type: "json_schema",
         json_schema: {
@@ -182,7 +181,7 @@ describe("OpenRouterProvider", () => {
     });
     expect(client.requests[0]?.tools).toBeUndefined();
     expect(client.requests[0]?.tool_choice).toBeUndefined();
-    expect(client.requests[0]?.parallel_tool_calls).toBeUndefined();
+    expect("parallel_tool_calls" in (client.requests[0] ?? {})).toBe(false);
   });
 
   test("requires a key for the real client and bounds timeout and retry settings", () => {

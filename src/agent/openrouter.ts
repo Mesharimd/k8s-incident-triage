@@ -66,7 +66,6 @@ export interface OpenRouterChatCompletionRequest {
   readonly provider: Readonly<{ require_parameters: true }>;
   readonly tools?: readonly OpenRouterFunctionTool[];
   readonly tool_choice?: "auto";
-  readonly parallel_tool_calls?: false;
 }
 
 type OpenRouterRequestContext = Omit<
@@ -875,7 +874,6 @@ export class OpenRouterProvider implements CompletionProvider {
           ...context,
           tools: mappedTools,
           tool_choice: "auto",
-          parallel_tool_calls: false,
         };
   }
 
