@@ -18,11 +18,10 @@ spec:
       {{- include "k8s-incident-triage.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-        {{- end }}
+      {{- end }}
       labels:
         {{- include "k8s-incident-triage.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
@@ -46,30 +45,14 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           ports:
             - name: http
-              containerPort: {{ .Values.config.port }}
+              containerPort: {{ .Values.container.port }}
               protocol: TCP
           envFrom:
-            - configMapRef:
-                name: {{ include "k8s-incident-triage.fullname" . }}
+            - secretRef:
+                name: {{ required "environment.existingSecret must name an operator-managed Secret" .Values.environment.existingSecret }}
           env:
-            - name: ANTHROPIC_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "k8s-incident-triage.secretName" . }}
-                  key: {{ .Values.secrets.anthropicApiKeyKey }}
-                  optional: false
-            - name: TELEGRAM_BOT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "k8s-incident-triage.secretName" . }}
-                  key: {{ .Values.secrets.telegramBotTokenKey }}
-                  optional: false
-            - name: TELEGRAM_CHAT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "k8s-incident-triage.secretName" . }}
-                  key: {{ .Values.secrets.telegramChatIdKey }}
-                  optional: false
+            - name: PROMETHEUS_URL
+              value: {{ required "prometheus.url must be the in-cluster Prometheus endpoint" .Values.prometheus.url | quote }}
           startupProbe:
             httpGet:
               path: /healthz

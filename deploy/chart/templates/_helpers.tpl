@@ -40,7 +40,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{- define "k8s-incident-triage.clusterRoleName" -}}
-{{- printf "%s-%s-readonly" (include "k8s-incident-triage.fullname" .) .Release.Namespace | trunc 253 | trimSuffix "-" -}}
+{{- printf "%s-readonly" (include "k8s-incident-triage.fullname" .) | trunc 253 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "k8s-incident-triage.image" -}}
@@ -49,8 +49,4 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- else -}}
 {{- printf "%s:%s" .Values.image.repository (default .Chart.AppVersion .Values.image.tag) -}}
 {{- end -}}
-{{- end -}}
-
-{{- define "k8s-incident-triage.secretName" -}}
-{{- default (include "k8s-incident-triage.fullname" .) .Values.secrets.existingSecret -}}
 {{- end -}}

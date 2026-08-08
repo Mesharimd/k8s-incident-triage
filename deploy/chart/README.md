@@ -1,20 +1,31 @@
 # k8s-incident-triage Helm chart
 
-This chart installs the receiver Service, a single-replica Deployment, and an
-optional read-only ServiceAccount/ClusterRole. It never creates a Kubernetes
-Secret.
+This chart installs the receiver Service, a single-replica Deployment, and the
+read-only ServiceAccount/ClusterRole contract from `deploy/rbac.yaml`. It never
+creates a Kubernetes Secret or templates a secret value.
 
-Create the credentials through the cluster's secret-management flow with these
-keys:
+Create the existing `triage-env` Secret through the cluster's Sealed Secrets
+flow. The Deployment imports every entry with `envFrom.secretRef`, so keys must
+be exact environment-variable names. An OpenRouter deployment requires at
+least:
 
-- `anthropic-api-key`
-- `telegram-bot-token`
-- `telegram-chat-id`
+- `LLM_PROVIDER=openrouter`
+- `OPENROUTER_API_KEY`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
 
-By default, the Deployment references a Secret with the Helm release's full
-name. Set `secrets.existingSecret` to reuse a differently named Secret. To reuse
-RBAC managed elsewhere, set `serviceAccount.create=false`,
-`serviceAccount.name=<name>`, and `rbac.create=false`.
+The production runbook supplies the full bounded runtime configuration. The
+chart explicitly sets `PROMETHEUS_URL` to the cluster-owned
+`http://prometheus-operated.monitoring.svc:9090`, overriding any same-named
+Secret entry. Keep `PORT=3000` aligned with `container.port` when overriding the
+runtime default. To reuse RBAC managed elsewhere, set
+`serviceAccount.create=false`, `serviceAccount.name` to that ServiceAccount,
+and `rbac.create=false`.
+
+The default image is
+`ghcr.io/mesharimd/k8s-incident-triage:latest`. Production GitOps should replace
+the mutable tag with the full Git SHA published by the image workflow and use
+`IfNotPresent` for that immutable tag.
 
 The chart enables an ingress `NetworkPolicy` by default. It permits the webhook
 port only from namespaces labeled `kubernetes.io/metadata.name: monitoring`.
@@ -86,11 +97,12 @@ been verified. The Prometheus Operator forces `continue: true` on the generated
 first-level route, so matching alerts continue through the existing
 Alertmanager routing tree.
 
-Build the DigitalOcean droplet image explicitly for x86-64:
+Build the cluster image explicitly for x86-64:
 
 ```sh
-docker buildx build --platform linux/amd64 --tag ghcr.io/mesharimd/k8s-incident-triage:0.1.0 .
+docker buildx build --platform linux/amd64 --tag ghcr.io/mesharimd/k8s-incident-triage:latest .
 ```
 
-In production GitOps values, pin `image.digest` to the published `sha256:`
-digest rather than relying on a mutable tag.
+In production GitOps values, pin `image.tag` to the full commit SHA published by
+the image workflow rather than relying on `latest`. `image.digest` remains
+available when an operator wants to pin the registry digest instead.

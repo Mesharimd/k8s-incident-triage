@@ -38,13 +38,92 @@ describe("production container contract", () => {
   });
 });
 
+describe("container image publishing contract", () => {
+  test("publishes linux/amd64 latest and full-SHA tags to GHCR", async () => {
+    const workflow = await readRepositoryFile(".github/workflows/image.yml");
+
+    expect(workflow).toMatch(/push:\s*[\s\S]*branches:\s*[\s\S]*- main/);
+    expect(workflow).toMatch(
+      /permissions:\s*[\s\S]*contents: read[\s\S]*packages: write/,
+    );
+    expect(workflow).toContain("platforms: linux/amd64");
+    expect(workflow).toContain(
+      "ghcr.io/mesharimd/k8s-incident-triage:latest",
+    );
+    expect(workflow).toContain(
+      "ghcr.io/mesharimd/k8s-incident-triage:${{ github.sha }}",
+    );
+    expect(workflow).toContain("password: ${{ secrets.GITHUB_TOKEN }}");
+
+    const actionReferences = workflow
+      .split("\n")
+      .filter((line) => /^\s*uses:/.test(line));
+    expect(actionReferences.length).toBeGreaterThan(0);
+    for (const reference of actionReferences) {
+      expect(reference).toMatch(
+        /^\s*uses:\s+[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+@[0-9a-f]{40}(?:\s+#\s+.+)?\s*$/,
+      );
+    }
+  });
+});
+
+describe("production deployment runbook contract", () => {
+  test("documents the ordered GitHub, Sealed Secrets, Argo CD, and Alertmanager handoff", async () => {
+    const runbook = await readRepositoryFile("docs/deploy-runbook.md");
+    const orderedSections = [
+      "## 1. Enable the image workflow and publish the image",
+      "## 2. Make the GHCR package public",
+      "## 3. Add the namespace and seal `triage-env`",
+      "## 4. Add the Argo CD Application",
+      "## 5. Route critical alerts from kube-prometheus-stack",
+      "## 6. Verify reconciliation",
+    ] as const;
+
+    let previousIndex = -1;
+    for (const section of orderedSections) {
+      const currentIndex = runbook.indexOf(section);
+      expect(currentIndex).toBeGreaterThan(previousIndex);
+      previousIndex = currentIndex;
+    }
+
+    expect(runbook).toContain("--controller-name sealed-secrets-controller");
+    expect(runbook).toContain("--controller-namespace sealed-secrets");
+    expect(runbook).toContain("--scope strict");
+    expect(runbook).toContain(
+      "> argocd/apps/k8s-incident-triage-sealedsecret.yaml",
+    );
+    expect(runbook).toContain(
+      "repoURL: https://github.com/Mesharimd/k8s-incident-triage.git",
+    );
+    expect(runbook).toContain("path: deploy/chart");
+    expect(runbook).not.toContain("sources:");
+    expect(runbook).toContain("disableAlerting: false");
+    expect(runbook).toContain("'severity = \"critical\"'");
+    expect(runbook).toContain(
+      "http://k8s-incident-triage.k8s-incident-triage.svc:80/alerts",
+    );
+  });
+
+  test("validates rendered core resources with pinned strict schemas", async () => {
+    const makefile = await readRepositoryFile("Makefile");
+
+    expect(makefile).toContain(
+      "ghcr.io/yannh/kubeconform:v0.7.0@sha256:85dbef6b4b312b99133decc9c6fc9495e9fc5f92293d4ff3b7e1b30f5611823c",
+    );
+    expect(makefile).toContain("KUBERNETES_SCHEMA_VERSION := 1.36.0");
+    expect(makefile).toContain("rendered_manifest");
+    expect(makefile).toContain("-schema-location");
+    expect(makefile).toContain("-strict");
+    expect(makefile).toContain("-summary");
+  });
+});
+
 describe("Helm deployment contract", () => {
   const expectedFiles = [
     "deploy/chart/Chart.yaml",
     "deploy/chart/values.yaml",
     "deploy/chart/templates/_helpers.tpl",
     "deploy/chart/templates/alertmanagerconfig.yaml",
-    "deploy/chart/templates/configmap.yaml",
     "deploy/chart/templates/deployment.yaml",
     "deploy/chart/templates/networkpolicy.yaml",
     "deploy/chart/templates/rbac.yaml",
@@ -61,17 +140,17 @@ describe("Helm deployment contract", () => {
       "deploy/chart/templates/deployment.yaml",
     );
     const service = await readRepositoryFile("deploy/chart/templates/service.yaml");
-    const configMap = await readRepositoryFile(
-      "deploy/chart/templates/configmap.yaml",
-    );
     const values = await readRepositoryFile("deploy/chart/values.yaml");
 
     expect(deployment).toContain("kind: Deployment");
     expect(deployment).toContain(
       "replicaCount must remain 1 because incident dedupe is process-local",
     );
-    expect(deployment).toContain("configMapRef:");
-    expect(deployment).toContain("secretKeyRef:");
+    expect(deployment).toContain("envFrom:");
+    expect(deployment).toContain("secretRef:");
+    expect(deployment).toContain(".Values.environment.existingSecret");
+    expect(deployment).not.toContain("configMapRef:");
+    expect(deployment).not.toContain("secretKeyRef:");
     expect(deployment).toContain("startupProbe:");
     expect(deployment).toContain("readinessProbe:");
     expect(deployment).toContain("livenessProbe:");
@@ -90,12 +169,14 @@ describe("Helm deployment contract", () => {
     expect(deployment).toContain("mountPath: /var/lib/k8s-incident-triage/traces");
     expect(service).toContain("kind: Service");
     expect(service).toContain("targetPort: http");
-    expect(configMap).toContain("PROMETHEUS_URL:");
-    expect(configMap).toContain("INCIDENT_STATE_CAPACITY:");
-    expect(configMap).toContain("INCIDENT_QUEUE_CAPACITY:");
-    expect(configMap).toContain("INCIDENT_CONCURRENCY:");
-    expect(configMap).toContain("TELEGRAM_TIMEOUT_MS:");
-    expect(configMap).toContain("TRACE_DIR:");
+    expect(values).toContain("fullnameOverride: k8s-incident-triage");
+    expect(values).toMatch(/service:\s*[\s\S]*port: 80/);
+    expect(values).toMatch(/container:\s*[\s\S]*port: 3000/);
+    expect(deployment).toContain("name: PROMETHEUS_URL");
+    expect(deployment).toContain(".Values.prometheus.url");
+    expect(values).toContain(
+      "http://prometheus-operated.monitoring.svc:9090",
+    );
   });
 
   test("bounds writable ephemeral storage and documents trace durability", async () => {
@@ -120,7 +201,7 @@ describe("Helm deployment contract", () => {
     );
   });
 
-  test("references external credentials without rendering a Secret", async () => {
+  test("imports the existing triage-env Secret without rendering secret data", async () => {
     const deployment = await readRepositoryFile(
       "deploy/chart/templates/deployment.yaml",
     );
@@ -133,14 +214,43 @@ describe("Helm deployment contract", () => {
       )
     ).join("\n");
 
-    expect(deployment).toContain("ANTHROPIC_API_KEY");
-    expect(deployment).toContain("TELEGRAM_BOT_TOKEN");
-    expect(deployment).toContain("TELEGRAM_CHAT_ID");
-    expect(values).toContain("existingSecret:");
-    expect(values).toContain("anthropicApiKeyKey:");
-    expect(values).toContain("telegramBotTokenKey:");
-    expect(values).toContain("telegramChatIdKey:");
+    expect(deployment).toContain("secretRef:");
+    expect(deployment).toContain(".Values.environment.existingSecret");
+    expect(deployment).not.toContain("secretKeyRef:");
+    expect(values).toContain("existingSecret: triage-env");
+    expect(values).not.toContain("anthropicApiKeyKey:");
+    expect(values).not.toContain("telegramBotTokenKey:");
+    expect(values).not.toContain("telegramChatIdKey:");
+    expect(
+      await repositoryFileExists("deploy/chart/templates/configmap.yaml"),
+    ).toBe(false);
+    expect(allTemplates).not.toMatch(/kind:\s*ConfigMap\b/);
     expect(allTemplates).not.toMatch(/kind:\s*Secret\b/);
+  });
+
+  test("reuses the standalone read-only ServiceAccount contract", async () => {
+    const deployment = await readRepositoryFile(
+      "deploy/chart/templates/deployment.yaml",
+    );
+    const serviceAccount = await readRepositoryFile(
+      "deploy/chart/templates/serviceaccount.yaml",
+    );
+    const rbac = await readRepositoryFile("deploy/chart/templates/rbac.yaml");
+    const values = await readRepositoryFile("deploy/chart/values.yaml");
+
+    expect(values).toMatch(/serviceAccount:\s*[\s\S]*create: true/);
+    expect(values).toMatch(
+      /serviceAccount:\s*[\s\S]*name: k8s-incident-triage/,
+    );
+    expect(deployment).toContain(
+      'serviceAccountName: {{ include "k8s-incident-triage.serviceAccountName" . }}',
+    );
+    expect(serviceAccount).toContain(
+      'name: {{ include "k8s-incident-triage.serviceAccountName" . }}',
+    );
+    expect(rbac).toContain(
+      'name: {{ include "k8s-incident-triage.serviceAccountName" . }}',
+    );
   });
 
   test("grants only the read operations required by the five cluster tools", async () => {

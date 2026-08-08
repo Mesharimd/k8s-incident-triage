@@ -103,7 +103,7 @@ describe("operator demo contract", () => {
         manifest.match(new RegExp(`namespace="${demoNamespace}"`, "g")),
       ).toHaveLength(scenario.namespaceMatcherCount);
       expect(manifest).not.toContain('namespace=~"');
-      expect(manifest).toContain('severity: "warning"');
+      expect(manifest).toContain('severity: "critical"');
       expect(manifest).toContain('demo: "true"');
       expect(manifest).toContain("for: 30s");
       expect(manifest).toContain(

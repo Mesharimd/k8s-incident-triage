@@ -2,19 +2,19 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/mesharimd/k8s-incident-triage
-  pullPolicy: IfNotPresent
-  tag: ""
+  pullPolicy: Always
+  tag: latest
   # A digest takes precedence over tag. Pin it in production GitOps values.
   digest: ""
 
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: k8s-incident-triage
 
 serviceAccount:
-  # Set create=false and name to reuse a pre-provisioned ServiceAccount.
+  # This name and the read-only role below mirror deploy/rbac.yaml.
   create: true
-  name: ""
+  name: k8s-incident-triage
   annotations: {}
 
 rbac:
@@ -44,6 +44,20 @@ service:
   port: 80
   annotations: {}
 
+container:
+  port: 3000
+
+environment:
+  # The operator creates this Secret through the cluster's Sealed Secrets flow.
+  # Every key is imported as an environment variable; this chart never renders
+  # a Secret or a secret value.
+  existingSecret: triage-env
+
+prometheus:
+  # This cluster-owned endpoint deliberately overrides any same-named key in
+  # triage-env so the read-only tools cannot be redirected by app credentials.
+  url: http://prometheus-operated.monitoring.svc:9090
+
 networkPolicy:
   enabled: true
   # Restrict webhook ingress to the namespace that runs Alertmanager. Narrow
@@ -52,35 +66,6 @@ networkPolicy:
     matchLabels:
       kubernetes.io/metadata.name: monitoring
   alertmanagerPodSelector: {}
-
-config:
-  port: 3000
-  alertDebounceSeconds: 300
-  minSeverity: warning
-  namespaceAllowlist: ""
-  namespaceDenylist: kube-system
-  prometheusUrl: http://prometheus-operated.monitoring.svc:9090
-  incidentStateCapacity: 1000
-  incidentQueueCapacity: 100
-  incidentConcurrency: 2
-  telegramTimeoutMs: 40000
-  anthropicModel: claude-sonnet-5
-  agentMaxToolCalls: 10
-  agentContextTokens: 32000
-  agentMaxOutputTokens: 4096
-  agentContextSafetyTokens: 1024
-  # Leaves time inside the ~2 minute target for report formatting and Telegram.
-  agentIncidentTimeoutMs: 75000
-  anthropicTimeoutMs: 15000
-  anthropicMaxRetries: 0
-  traceDirectory: /var/lib/k8s-incident-triage/traces
-
-secrets:
-  # The chart never creates this Secret. Empty defaults to the release fullname.
-  existingSecret: ""
-  anthropicApiKeyKey: anthropic-api-key
-  telegramBotTokenKey: telegram-bot-token
-  telegramChatIdKey: telegram-chat-id
 
 probes:
   startup:
@@ -96,8 +81,9 @@ probes:
     timeoutSeconds: 1
     failureThreshold: 3
 
-# Active work is bounded to 75s triage + 40s Telegram delivery. Shutdown stops
-# admission, cancels pending work, and lets active work settle within this grace.
+# The runbook's production environment bounds active work to 75s triage + 40s
+# Telegram delivery. Shutdown stops admission, cancels pending work, and lets
+# active work settle within this grace.
 terminationGracePeriodSeconds: 120
 
 resources:

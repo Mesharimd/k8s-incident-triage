@@ -90,7 +90,7 @@ spec:
             ) > 0.5
           for: 30s
           labels:
-            severity: "warning"
+            severity: "critical"
             demo: "true"
             scenario: "latency"
           annotations:
